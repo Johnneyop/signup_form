@@ -161,7 +161,7 @@ describe("Sign Up Page", () => {
             const text = screen.queryByText(
                 "Please check your e-mail to activate your account"
             );
-            expect(text).not.toBeVisible();
+            expect(text).not.toBeInTheDocument();
         });
         it("does not displays account activation information after failing sign up request", 
         async () => {
@@ -178,7 +178,7 @@ describe("Sign Up Page", () => {
             await server.close();
 
             const text = screen.queryByText("Please check your e-mail to activate your account");            
-            expect(text).not.toBeVisible();
+            expect(text).not.toBeInTheDocument();
         });
         it("hides sign up form after successful sign up request", 
         async () => {
@@ -195,7 +195,7 @@ describe("Sign Up Page", () => {
             await userEvent.click(button);
             await server.close();
             await waitFor(() => {
-                expect(form).not.toBeVisible();
+                expect(form).not.toBeInTheDocument();
             })
 
         });

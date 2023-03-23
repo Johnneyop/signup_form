@@ -1,6 +1,6 @@
 <template>
     <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
-        <form class="card mt-5" data-testid="form-sign-up" v-show="!signUpSuccess">
+        <form class="card mt-5" data-testid="form-sign-up" v-if="!signUpSuccess">
             <div class="card-header">
                 <h1 class="text-center">Sign Up</h1>
             </div>
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </form>
-        <div class="alert alert-success" v-show="signUpSuccess">
+        <div class="alert alert-success mt-3" v-else>
             Please check your e-mail to activate your account
         </div>
     </div>
