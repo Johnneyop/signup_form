@@ -1,10 +1,10 @@
 <template>
     <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
-        <form class="card mt-5">
-        <div class="card-header">
-            <h1 class="text-center">Sign Up</h1>
-        </div>
-        <div class="card-body">
+        <form class="card mt-5" data-testid="form-sign-up" v-show="!signUpSuccess">
+            <div class="card-header">
+                <h1 class="text-center">Sign Up</h1>
+            </div>
+            <div class="card-body">
                 <div class="mb-3">
                     <label htmlFor="username" class="form-label">Username</label>
                     <input id="username" class="form-control" v-model="username"/>
@@ -25,10 +25,16 @@
                     <input id="password-repeat" type="password" v-model="passwordRepeat" class="form-control" />
                 </div>
                 <div class="text-center">
-                    <button class="btn btn-primary" :disabled="isDisabled" @click.prevent="submit">Sign Up</button>
+                    <button class="btn btn-primary" :disabled="isDisabled || disabled" @click.prevent="submit">
+                        <span v-if="apiProgress" class="spinner-border spinner-border-sm" role="status"></span>
+                        Sign Up
+                    </button>
                 </div>
             </div>
         </form>
+        <div class="alert alert-success" v-show="signUpSuccess">
+            Please check your e-mail to activate your account
+        </div>
     </div>
 </template>
 <script>
@@ -37,19 +43,29 @@ export default {
     name: 'SignUpPage',
     data() {
         return {
+            disabled: false,
             username: "",
             email: "",
             password: "",
             passwordRepeat: "",
+            apiProgress: false,
+            signUpSuccess: false,
         };
     },
     methods: {
         submit() {
-            axios.post("/api/1.0/users", {
+            this.disabled = true;
+            this.apiProgress = true;
+            axios
+            .post("/api/1.0/users", {
                 username: this.username,
                 email: this.email,
                 password: this.password,
             })
+            .then(() => {
+                this.signUpSuccess = true;
+            })
+            .catch(() => {});
         },
     },
     computed: {
